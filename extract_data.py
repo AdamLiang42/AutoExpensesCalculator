@@ -91,6 +91,22 @@ def add_expense_type(data, expense_type_data):
         temp_data.append(item)
     return temp_data
 
+def total_by_expense_type(data, expense_type):
+    selected_data = []
+    for i in data:
+        if i["expense_type"] == expense_type:
+            selected_data.append(i)
+    
+    money_in = 0
+    money_out = 0
+    for i in selected_data:
+        if i["amount"] > 0:
+            money_in += i["amount"]
+        else:
+            money_out += i["amount"]
+    return money_in, money_out
+        
+
 #############################################Temp Use#######################################
 def exist_category(description, categories):
     for item in categories:
@@ -133,8 +149,8 @@ if __name__ == "__main__":
     data_location = "./data.json"
     category_location = "./trans_cat.csv"
     expense_type_location = "./cat_label.csv"
-    start_date = datetime.datetime(2021, 12, 1)
-    end_date = datetime.datetime(2022, 12, 1)
+    start_date = datetime.datetime(2021, 11, 1)
+    end_date = datetime.datetime(2021, 12, 1)
 
     # load data
     raw_data = load_data(data_location)
@@ -153,17 +169,21 @@ if __name__ == "__main__":
     # add 4 expenses type to data
     data_selected = add_expense_type(data_selected, expense_type_data)
 
-    # for i in data_selected:
-    #     print(i)
+
+    expense_type = [1,2,3,4,None]
+    expense_type_name = ["need", "nice to have", "subscription", "others", "N/A"]
+    for i in  range (len(expense_type)):
+        money_in, money_out = total_by_expense_type(data_selected, expense_type[i])
+        print("\n" + "="*50 + "\nFor", expense_type_name[i], ": \nmoney in:", str(money_in) + "\nmonry out:", money_out)
 
 ###############################Temp Use###############################
     
-    # find desc that missing catrgory
+    ##### find desc that missing catrgory #####
     # all_category = list(category_data["desc"])
     # missed_desc(data_selected, all_category)
 
-    # find category that missing expense type
-    # all category listed
+    ##### find category that missing expense type #####
+    # # all category listed
     # all_available_categories = list(category_data["cate"])
     # # all categroy that have assigned a expense type
     # all_categories = list(expense_type_data["category"])
