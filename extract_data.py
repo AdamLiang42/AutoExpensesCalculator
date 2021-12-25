@@ -19,7 +19,7 @@ def load_data(data_location):
     data = temp_data
     return data
 
-def process_data(data):
+def extract_info(data):
     # convert date
     processed_data = []
     for i in range (len(data)):
@@ -105,6 +105,31 @@ def total_by_expense_type(data, expense_type):
         else:
             money_out += i["amount"]
     return money_in, money_out
+
+def process_data(data_location, category_location, expense_type_location):
+    
+    # load data
+    raw_data = load_data(data_location)
+    category_data = pd.read_csv(category_location)
+    expense_type_data = pd.read_csv(expense_type_location)
+
+    # extract data info
+    data = extract_info(raw_data)
+
+    # add category to items
+    data = add_category(data, category_data)
+
+    # add 4 expenses type to data
+    data = add_expense_type(data, expense_type_data)
+
+    return data
+
+def print_by_expense_type(data_selected):
+    expense_type = [1,2,3,4,None]
+    expense_type_name = ["need", "nice to have", "subscription", "others", "N/A"]
+    for i in  range (len(expense_type)):
+        money_in, money_out = total_by_expense_type(data_selected, expense_type[i])
+        print("\n" + "="*50 + "\nFor", expense_type_name[i], ": \nmoney in:", str(money_in) + "\nmonry out:", money_out)
         
 
 #############################################Temp Use#######################################
@@ -153,36 +178,25 @@ if __name__ == "__main__":
     end_date = datetime.datetime(2021, 12, 1)
 
     # load data
-    raw_data = load_data(data_location)
-    category_data = pd.read_csv(category_location)
-    expense_type_data = pd.read_csv(expense_type_location)
-    
-    # process data
-    processed_data = process_data(raw_data)
+    data = process_data(data_location, category_location, expense_type_location)
     
     # select data within given time frame
-    data_selected = select_data(processed_data, start_date, end_date)
-    
-    # add category to items
-    data_selected = add_category(data_selected, category_data)
+    data_selected = select_data(data, start_date, end_date)
 
-    # add 4 expenses type to data
-    data_selected = add_expense_type(data_selected, expense_type_data)
-
-
-    expense_type = [1,2,3,4,None]
-    expense_type_name = ["need", "nice to have", "subscription", "others", "N/A"]
-    for i in  range (len(expense_type)):
-        money_in, money_out = total_by_expense_type(data_selected, expense_type[i])
-        print("\n" + "="*50 + "\nFor", expense_type_name[i], ": \nmoney in:", str(money_in) + "\nmonry out:", money_out)
+    # # print by expense type
+    # print_by_expense_type(data_selected)
 
 ###############################Temp Use###############################
     
+    # raw_data = load_data(data_location)
+    # category_data = pd.read_csv(category_location)
+    # expense_type_data = pd.read_csv(expense_type_location)
+
     ##### find desc that missing catrgory #####
     # all_category = list(category_data["desc"])
     # missed_desc(data_selected, all_category)
 
-    ##### find category that missing expense type #####
+    # #### find category that missing expense type #####
     # # all category listed
     # all_available_categories = list(category_data["cate"])
     # # all categroy that have assigned a expense type
