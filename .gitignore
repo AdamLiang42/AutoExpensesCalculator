@@ -1,6 +1,2 @@
-cat_label.csv
-data.json
-westpac.html
-trans_cat.csv
-test_data
-__pycache__
+data
+backend/__pycache__
