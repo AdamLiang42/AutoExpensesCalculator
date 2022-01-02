@@ -7,9 +7,9 @@ from extract_data import *
 class Data(Resource):
     def __init__(self):
         # specify info
-        data_location = "./data.json"
-        category_location = "./trans_cat.csv"
-        expense_type_location = "./cat_label.csv"
+        data_location = "../data/data.json"
+        category_location = "../data/trans_cat.csv"
+        expense_type_location = "../data/cat_label.csv"
         start_date = datetime.datetime(2021, 11, 1)
         end_date = datetime.datetime(2021, 12, 1)
         

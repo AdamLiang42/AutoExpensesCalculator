@@ -8,7 +8,6 @@ import string
 
 def load_data(data_location):
     # load data file
-    data = json.load(open("./data.json"))
     data = json.load(open(data_location))
     data = data["transactions"]
 
@@ -171,9 +170,9 @@ def missed_category(all_available_categories, all_categories):
 if __name__ == "__main__":
 
     # specify info
-    data_location = "./data.json"
-    category_location = "./trans_cat.csv"
-    expense_type_location = "./cat_label.csv"
+    data_location = "../data/data.json"
+    category_location = "../data/trans_cat.csv"
+    expense_type_location = "../data/cat_label.csv"
     start_date = datetime.datetime(2021, 11, 1)
     end_date = datetime.datetime(2021, 12, 1)
 
